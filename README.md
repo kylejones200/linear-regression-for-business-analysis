@@ -1,13 +1,44 @@
 # Linear Regression for Business Analysis
 
-**Published:** 2024-04-20
-**Medium:** [https://medium.com/@kyle-t-jones/linear-regression-for-business-analysis-2407d9fe2942](https://medium.com/@kyle-t-jones/linear-regression-for-business-analysis-2407d9fe2942)
+This project demonstrates linear regression techniques for business analysis.
 
-## About
+## Article
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
+Medium article: [Linear Regression for Business Analysis](https://medium.com/@kylejones_47003/linear-regression-for-business-analysis-2407d9fe2942)
 
-## Files
+## Project Structure
 
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
+```
+.
+├── README.md           # This file
+├── main.py            # Main entry point
+├── config.yaml        # Configuration file
+├── requirements.txt   # Python dependencies
+├── src/               # Core functions
+│   ├── core.py        # Linear regression functions
+│   └── plotting.py    # Tufte-style plotting utilities
+├── tests/             # Unit tests
+├── data/              # Data files
+└── images/            # Generated plots and figures
+```
+
+## Configuration
+
+Edit `config.yaml` to customize:
+- Data source or synthetic generation
+- Feature and target columns
+- Output settings
+
+## Linear Regression
+
+Linear regression provides:
+- **Coefficients**: Feature importance
+- **R² Score**: Model fit quality
+- **RMSE/MAE**: Prediction error metrics
+- **Business insights**: Relationship understanding
+
+## Caveats
+
+- By default, generates synthetic business data.
+- Assumes linear relationship between features and target.
+- Feature selection important for model quality.
