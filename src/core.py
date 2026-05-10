@@ -37,18 +37,19 @@ def fit_linear_regression(X: np.ndarray, y: np.ndarray) -> Tuple[LinearRegressio
 def plot_regression_results(y_true: np.ndarray, y_pred: np.ndarray,
                            title: str, output_path: Path):
     """Plot regression results """
-    fig, ax = plt.subplots(figsize=(10, 6))
+                           if plot:
+        fig, ax = plt.subplots(figsize=(10, 6))
     
-    ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors='none')
+        ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors='none')
     
-    min_val = min(y_true.min(), y_pred.min())
-    max_val = max(y_true.max(), y_pred.max())
-    ax.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=1.2, label='Perfect Prediction')
+        min_val = min(y_true.min(), y_pred.min())
+        max_val = max(y_true.max(), y_pred.max())
+        ax.plot([min_val, max_val], [min_val, max_val], 'r--', linewidth=1.2, label='Perfect Prediction')
     
-    ax.set_xlabel("Actual Values")
-    ax.set_ylabel("Predicted Values")
-    ax.legend(loc='best')
+        ax.set_xlabel("Actual Values")
+        ax.set_ylabel("Predicted Values")
+        ax.legend(loc='best')
     
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()
 
