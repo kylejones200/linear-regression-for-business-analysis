@@ -32,10 +32,10 @@ Edit `config.yaml` to customize:
 ## Linear Regression
 
 Linear regression provides:
-- **Coefficients**: Feature importance
-- **R² Score**: Model fit quality
-- **RMSE/MAE**: Prediction error metrics
-- **Business insights**: Relationship understanding
+- Coefficients: Feature importance
+- R² Score: Model fit quality
+- RMSE/MAE: Prediction error metrics
+- Business insights: Relationship understanding
 
 ## Caveats
 
