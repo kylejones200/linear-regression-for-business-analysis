@@ -37,7 +37,7 @@ def fit_linear_regression(X: np.ndarray, y: np.ndarray) -> Tuple[LinearRegressio
 def plot_regression_results(y_true: np.ndarray, y_pred: np.ndarray,
                            title: str, output_path: Path):
     """Plot regression results """
-                           if plot:
+    if plot:
         fig, ax = plt.subplots(figsize=(10, 6))
     
         ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors='none')
