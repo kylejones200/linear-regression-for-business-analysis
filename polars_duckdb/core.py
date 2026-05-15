@@ -5,11 +5,12 @@ For multiple regression: numpy lstsq fits the model; DuckDB computes all evaluat
 sklearn.linear_model and sklearn.metrics are not imported.
 """
 
-import duckdb
-import polars as pl
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
+
+import duckdb
+import matplotlib.pyplot as plt
+import numpy as np
+import polars as pl
 
 
 def fit_regression(
@@ -27,29 +28,35 @@ def fit_regression(
     """
     if len(feature_cols) == 1:
         x_col = feature_cols[0]
-        params = duckdb.sql(f"""
+        params = (
+            duckdb.sql(f"""
             SELECT
                 REGR_SLOPE("{target_col}", "{x_col}")     AS slope,
                 REGR_INTERCEPT("{target_col}", "{x_col}") AS intercept,
                 REGR_R2("{target_col}", "{x_col}")        AS r2
             FROM df
-        """).pl().row(0, named=True)
+        """)
+            .pl()
+            .row(0, named=True)
+        )
         coefficients = np.array([params["slope"]])
-        intercept    = params["intercept"]
+        intercept = params["intercept"]
     else:
         X = df.select(feature_cols).to_numpy()
         y = df[target_col].to_numpy()
         X_aug = np.column_stack([X, np.ones(len(X))])
         result, *_ = np.linalg.lstsq(X_aug, y, rcond=None)
         coefficients = result[:-1]
-        intercept    = float(result[-1])
+        intercept = float(result[-1])
 
     # Build predicted column and score entirely in DuckDB
-    pred_expr = " + ".join(
-        f"{coef} * \"{col}\"" for coef, col in zip(coefficients, feature_cols)
-    ) + f" + {intercept}"
+    pred_expr = (
+        " + ".join(f'{coef} * "{col}"' for coef, col in zip(coefficients, feature_cols))
+        + f" + {intercept}"
+    )
 
-    metrics = duckdb.sql(f"""
+    metrics = (
+        duckdb.sql(f"""
         WITH preds AS (
             SELECT
                 "{target_col}" AS actual,
@@ -61,9 +68,16 @@ def fit_regression(
             SQRT(AVG(POWER(actual - predicted, 2)))        AS rmse,
             AVG(ABS(actual - predicted))                   AS mae
         FROM preds
-    """).pl().row(0, named=True)
+    """)
+        .pl()
+        .row(0, named=True)
+    )
 
-    return coefficients, intercept, {**metrics, "coefficients": coefficients.tolist(), "intercept": intercept}
+    return (
+        coefficients,
+        intercept,
+        {**metrics, "coefficients": coefficients.tolist(), "intercept": intercept},
+    )
 
 
 def plot_regression_results(
@@ -75,9 +89,10 @@ def plot_regression_results(
     title: str,
     output_path: Path,
 ):
-    pred_expr = " + ".join(
-        f"{coef} * \"{col}\"" for coef, col in zip(coefficients, feature_cols)
-    ) + f" + {intercept}"
+    pred_expr = (
+        " + ".join(f'{coef} * "{col}"' for coef, col in zip(coefficients, feature_cols))
+        + f" + {intercept}"
+    )
 
     result = duckdb.sql(f"""
         SELECT "{target_col}" AS actual, {pred_expr} AS predicted FROM df
