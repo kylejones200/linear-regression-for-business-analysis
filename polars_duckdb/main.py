@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Linear regression — Polars + DuckDB rewrite (no sklearn)."""
 
-import sys
 import argparse
 import yaml
 import logging

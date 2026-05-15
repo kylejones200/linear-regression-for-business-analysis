@@ -18,7 +18,7 @@ def load_config(config_path: Path = None) -> dict:
     if config_path is None:
         config_path = Path(__file__).parent / 'config.yaml'
     
-    with open(config_path, 'r') as f:
+    with open(config_path) as f:
         return yaml.safe_load(f)
 
 def main():
@@ -53,7 +53,7 @@ def main():
     
         model, metrics = fit_linear_regression(X, y)
     
-    logging.info(f"\nRegression Metrics:")
+    logging.info("\nRegression Metrics:")
     logging.info(f"R² Score: {metrics['r2']:.4f}")
     logging.info(f"RMSE: {metrics['rmse']:.4f}")
     logging.info(f"MAE: {metrics['mae']:.4f}")

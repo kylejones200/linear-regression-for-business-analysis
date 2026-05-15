@@ -10,14 +10,13 @@ import polars as pl
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 
 def fit_regression(
     df: pl.DataFrame,
-    feature_cols: List[str],
+    feature_cols: list[str],
     target_col: str,
-) -> Tuple[np.ndarray, float, Dict]:
+) -> tuple[np.ndarray, float, dict]:
     """
     Fit linear regression and score it.
 
@@ -69,7 +68,7 @@ def fit_regression(
 
 def plot_regression_results(
     df: pl.DataFrame,
-    feature_cols: List[str],
+    feature_cols: list[str],
     target_col: str,
     coefficients: np.ndarray,
     intercept: float,
