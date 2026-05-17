@@ -46,24 +46,26 @@ def plot_regression_results(
     y_true: np.ndarray, y_pred: np.ndarray, title: str, output_path: Path
 ):
     """Plot regression results"""
-    if plot:
-        fig, ax = plt.subplots(figsize=(10, 6))
+    if not plot:
+        return
 
-        ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors="none")
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-        min_val = min(y_true.min(), y_pred.min())
-        max_val = max(y_true.max(), y_pred.max())
-        ax.plot(
-            [min_val, max_val],
-            [min_val, max_val],
-            "r--",
-            linewidth=1.2,
-            label="Perfect Prediction",
-        )
+    ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors="none")
 
-        ax.set_xlabel("Actual Values")
-        ax.set_ylabel("Predicted Values")
-        ax.legend(loc="best")
+    min_val = min(y_true.min(), y_pred.min())
+    max_val = max(y_true.max(), y_pred.max())
+    ax.plot(
+        [min_val, max_val],
+        [min_val, max_val],
+        "r--",
+        linewidth=1.2,
+        label="Perfect Prediction",
+    )
 
-        plt.savefig(output_path, dpi=100, bbox_inches="tight")
-        plt.close()
+    ax.set_xlabel("Actual Values")
+    ax.set_ylabel("Predicted Values")
+    ax.legend(loc="best")
+
+    plt.savefig(output_path, dpi=100, bbox_inches="tight")
+    plt.close()

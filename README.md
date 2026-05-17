@@ -42,3 +42,11 @@ Linear regression provides:
 - By default, generates synthetic business data.
 - Assumes linear relationship between features and target.
 - Feature selection important for model quality.
+
+## Disclaimer
+
+Educational/demo code only. Not financial, safety, or engineering advice. Use at your own risk. Verify results independently before any production or operational use.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
