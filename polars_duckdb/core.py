@@ -20,10 +20,8 @@ def fit_regression(
 ) -> tuple[np.ndarray, float, dict]:
     """
     Fit linear regression and score it.
-
     Single feature  → DuckDB REGR_* functions (no numpy needed).
     Multiple features → numpy lstsq for coefficients; DuckDB for all metrics.
-
     Returns (coefficients, intercept, metrics_dict).
     """
     if len(feature_cols) == 1:
@@ -54,7 +52,6 @@ def fit_regression(
         " + ".join(f'{coef} * "{col}"' for coef, col in zip(coefficients, feature_cols))
         + f" + {intercept}"
     )
-
     metrics = (
         duckdb.sql(f"""
         WITH preds AS (
@@ -72,7 +69,6 @@ def fit_regression(
         .pl()
         .row(0, named=True)
     )
-
     return (
         coefficients,
         intercept,
@@ -93,16 +89,12 @@ def plot_regression_results(
         " + ".join(f'{coef} * "{col}"' for coef, col in zip(coefficients, feature_cols))
         + f" + {intercept}"
     )
-
     result = duckdb.sql(f"""
         SELECT "{target_col}" AS actual, {pred_expr} AS predicted FROM df
     """).pl()
-
     y_true = result["actual"].to_numpy()
     y_pred = result["predicted"].to_numpy()
-
     lo, hi = min(y_true.min(), y_pred.min()), max(y_true.max(), y_pred.max())
-
     if plot:
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.scatter(y_true, y_pred, alpha=0.6, color="#4A90A4", s=30, edgecolors="none")

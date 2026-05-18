@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 
 
-def load_config(config_path: Path = None) -> dict:
+def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file."""
     if config_path is None:
         config_path = Path(__file__).parent / "config.yaml"
@@ -39,7 +39,6 @@ def main():
         "--output-dir", type=Path, default=None, help="Output directory"
     )
     args = parser.parse_args()
-
     config = load_config(args.config)
     output_dir = (
         Path(args.output_dir)
@@ -47,7 +46,6 @@ def main():
         else Path(config["output"]["figures_dir"])
     )
     output_dir.mkdir(exist_ok=True)
-
     if args.data_path and args.data_path.exists():
         df = pd.read_csv(args.data_path)
     elif config["data"]["generate_synthetic"]:
@@ -59,7 +57,6 @@ def main():
             + 1.5 * feature2
             + np.random.normal(0, 5, config["data"]["n_samples"])
         )
-
         df = pd.DataFrame(
             {
                 config["model"]["feature_columns"][0]: feature1,
@@ -69,11 +66,9 @@ def main():
         )
     else:
         raise ValueError("No data source specified")
-
         X, y = prepare_regression_data(
             df, config["model"]["feature_columns"], config["model"]["target_column"]
         )
-
         model, metrics = fit_linear_regression(X, y)
 
     logging.info("\nRegression Metrics:")
@@ -82,7 +77,6 @@ def main():
     logging.info(f"MAE: {metrics['mae']:.4f}")
     logging.info(f"\nCoefficients: {metrics['coefficients']}")
     logging.info(f"Intercept: {metrics['intercept']:.4f}")
-
     y_pred = model.predict(X)
     plot_regression_results(
         y,
@@ -90,7 +84,6 @@ def main():
         "Linear Regression: Actual vs Predicted",
         output_dir / "regression_results.png",
     )
-
     logging.info(f"\nAnalysis complete. Figures saved to {output_dir}")
 
 
